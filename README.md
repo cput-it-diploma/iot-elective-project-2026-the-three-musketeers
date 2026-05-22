@@ -396,7 +396,7 @@ void loop() {
 ## 🎥 Project Demonstration
 
 - 📹 **Demo Video:** [Insert link here]
-- 📊 **Presentation Slides:** [Insert link here]
+- 📊 **Presentation Slides:** (https://github.com/cput-it-diploma/iot-elective-project-2026-the-three-musketeers/blob/main/The%20Three%20Musketeers_Presentation.pptx)
 - 🔗 **Live Dashboard (if applicable):** [Insert link here]
 
 ---
