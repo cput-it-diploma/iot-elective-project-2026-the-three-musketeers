@@ -63,7 +63,25 @@ To solve these challenges, this project proposes upgrading the existing RFID sys
 ![(images/architecture_diagram.png)](https://github.com/cput-it-diploma/iot-elective-project-2026-the-three-musketeers/blob/f965dfbdc26beb723a48c8771cd82979c678e8eb/System%20architecture.png)
 
 ### Design Decisions
-> _Explain the key design decisions your group made._
+The RFID student card door lock system was designed with important factors in mind like affordability, ease of use and academic presentation needs.
+The Arduino Uno was chosen because it boots quickly uses power and can respond right away.
+The Raspberry Pi was not used because of its boot time and higher power usage.
+The RFID RC522 module was picked because it works with 13.56MHz student cards and costs only R180.
+A 12V electric door strike was used to ensure the door stays locked when there is no power providing access control.
+This is managed by a 4-channel relay module, which was chosen because it was available from Micro Robotics.
+The system has two power sources: the Arduino uses a USB cable (5V). The door strike uses a separate 12V adapter.
+This keeps current switching away from delicate logic elements.
+To check if a card is valid the system compares the cards 4-byte UID to a list of authorized IDs stored in the Arduinos memory.
+This method is simple and good for purposes but real systems would need more secure methods like encrypted sector authentication or cloud verification.
+The software uses a method to check for card reads instead of interrupts and the door stays open for 3 seconds, which is standard for access control systems.
+All feedback is shown on the Serial Monitor because the buzzer was removed at the lecturers request.
+These decisions resulted in a working prototype that costs R780 shows access control principles and meets all the requirements within the budget.
+The Arduino Uno and RFID RC522 module were key to making this system work.
+The RFID student card door lock system is an example of how to control access, with a student card.
+It was made with affordability and ease of use in mind.
+The system uses an Arduino Uno and an RFID RC522 module to check student cards.
+The door strike and relay module were also parts of the system.
+The systems design and components were chosen carefully to meet the needs of the project.
 
 ---
 
