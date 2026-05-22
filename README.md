@@ -94,7 +94,7 @@ To solve these challenges, this project proposes upgrading the existing RFID sys
 
 ## 🔌 Circuit Diagram / Wiring
 
-![Circuit Diagram](images/circuit_diagram.png)
+![circuit_diagram.png](https://github.com/cput-it-diploma/iot-elective-project-2026-the-three-musketeers/blob/f8620d01950c09f9920d2a4e78889c7633a01d5b/circuit%20diagram.jpeg)
 
 | Component Pin | Microcontroller Pin | Notes |
 |---|---|---|
