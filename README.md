@@ -60,7 +60,7 @@ To solve these challenges, this project proposes upgrading the existing RFID sys
 
 ## 🏗️ System Architecture & Design
 
-![System Architecture Diagram](images/architecture_diagram.png)
+![(images/architecture_diagram.png)](https://github.com/cput-it-diploma/iot-elective-project-2026-the-three-musketeers/blob/f965dfbdc26beb723a48c8771cd82979c678e8eb/System%20architecture.png)
 
 ### Design Decisions
 > _Explain the key design decisions your group made._
