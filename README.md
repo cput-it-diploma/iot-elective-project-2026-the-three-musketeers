@@ -1,4 +1,4 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/AnR2QgvN)
+<img width="1125" height="70" alt="image" src="https://github.com/user-attachments/assets/680c2c94-59c1-4683-99f2-e3b8c50cedc1" /><img width="583" height="70" alt="image" src="https://github.com/user-attachments/assets/547f2173-7693-4094-822e-4a90c0f81c12" />[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/AnR2QgvN)
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=22947230&assignment_repo_type=AssignmentRepo)
 # 🌐 IoT Elective Project 2026
 ### Cape Peninsula University of Technology — IT Diploma
@@ -378,8 +378,8 @@ void loop() {
 |---|---|---|---|---|
 | 1 | RFID reader | reads card | reads | ✅ Pass |
 | 2 | lock gate | 5 sec after unlocking | locks after 5 seconds |  ✅ Pass |
-| 3 | LED flickers when there is movement | LED Flickers| ✅ Pass |
-| 4 | Relay Module to click after unlocking| Does not click | ❎ fail | 
+| 3 | LED flickers when there is movement | LED to Flicker | flickers | ✅ Pass 
+| 4 | Relay Module to click after unlocking| Relay to click | doesn't click | ❎ fail
 
 ---
 
@@ -387,8 +387,9 @@ void loop() {
 
 | Challenge Encountered | Solution Applied |
 |---|---|
-| [e.g. Wi-Fi connection drops] | [e.g. Added reconnect logic] |
-| [e.g. Noisy sensor readings] | [e.g. Applied moving average filter] |
+| Arduino not reading | Reinstalled CH340/Arduino drivers. Selected the correct COM port and board (Arduino Uno) in Arduino IDE|
+| No power supply for the 12V Solenoid lock | DSTV adapter was used as an alternative poer supply, which provided the needed 12V DC power |
+| Solenoid Lock getting burnt | we could find an alternative solution hence it got burnt the day before presentation |
 
 ---
 
