@@ -403,8 +403,8 @@ void loop() {
 
 ## 📚 References
 
-1. [Ardiuno RFID|how to use RFID RC522 with Ardiuno](https://youtu.be/pdBrvLGH0PE?si=7686agDW0Khmpqe8) — _Brief description_
-2. [Reference Title](https://link-to-reference.com) — _Brief description_
+1. [Ardiuno RFID|how to use RFID RC522 with Ardiuno](https://youtu.be/pdBrvLGH0PE?si=7686agDW0Khmpqe8) 
+2. [How to build a smart RFID door lock ](https://www.pcbway.com/project/shareproject/Using_Arduino_to_Build_a_Smart_RFID_Door_Lock_System_d1ab29bf.html)
 
 ---
 
