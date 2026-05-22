@@ -96,11 +96,26 @@ To solve these challenges, this project proposes upgrading the existing RFID sys
 
 ![circuit_diagram.png](https://github.com/cput-it-diploma/iot-elective-project-2026-the-three-musketeers/blob/f8620d01950c09f9920d2a4e78889c7633a01d5b/circuit%20diagram.jpeg)
 
-| Component Pin | Microcontroller Pin | Notes |
-|---|---|---|
-| [e.g. DHT11 DATA] | [e.g. D2] | [Pull-up resistor required] |
-| [e.g. LED +] | [e.g. D13] | [220Ω resistor in series] |
+## RFID Door Lock System Connections
 
+| Component / Module | Pin / Wire | Connected To |
+|---|---|---|
+| RFID Module | SDA | Arduino Digital Pin 10 |
+| RFID Module | SCK | Arduino Digital Pin 13 |
+| RFID Module | MOSI | Arduino Digital Pin 11 |
+| RFID Module | MISO | Arduino Digital Pin 12 |
+| RFID Module | GND | Arduino GND |
+| RFID Module | RST | Arduino Digital Pin 9 |
+| RFID Module | 3.3V | Arduino 3.3V |
+| Arduino | Digital Pin 3 | 1K Ohm Resistor |
+| 1K Ohm Resistor | Output | LED Positive Pin (+) |
+| LED | Negative Pin (-) | Arduino GND |
+| Relay Module | VCC (+) | Arduino 5V |
+| Relay Module | GND (-) | Arduino GND |
+| Relay Module | Signal Pin (S) | Arduino Digital Pin 2 |
+| 12V Power Supply | Positive (+) | Electromagnetic Lock Red Wire (+) |
+| 12V Power Supply | Negative (-) | Relay COM Pin |
+| Electromagnetic Lock | Black Wire (-) | Relay NO Pin |
 ---
 
 ## 🏭 Build Process (with photos)
