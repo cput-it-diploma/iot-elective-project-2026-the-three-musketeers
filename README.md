@@ -105,15 +105,90 @@ To solve these challenges, this project proposes upgrading the existing RFID sys
 
 ## 🏭 Build Process (with photos)
 
-### Step 1: [Step Title]
-> _Description of what was done._
+### Step 1: Work space preparation
+Clear a desk/table surface
+
+Place Arduino Uno in front of you
+
+Place breadboard next to Arduino
+Keep laptop/USB power within reach
 
 ![Step 1 Photo](images/build_step1.jpg)
 
-### Step 2: [Step Title]
-> _Description of what was done._
+### Step 2:  RFID Module Connections
+
+Locate the RFID pins and connect them to their corresponding Arduino Uno pins. as follows,
+## RFID connection table
+
+| RFID Pin     | Arduino Uno Pin | 
+|--------------|----------------|
+| SDA (SS)     | Pin 10         |
+| SCK          | Pin 13         | 
+| MOSI         | Pin 11         | 
+| MISO         | Pin 12         | 
+| RST          | Pin 9          | 
+| 3.3V         | 3.3V (NOT 5V)  | 
+| GND          | GND            | 
+
 
 ![Step 2 Photo](images/build_step2.jpg)
+
+### Step 3: Relay Module Connection
+
+Locate the Relay Module pins and connect them to their corresponding Arduino Uno pins. as follows,
+## Relay Module Connection Table
+
+| Relay Pin | Arduino Pin |
+|----------|-------------|
+| VCC      | 5V          |
+| GND      | GND         |
+| IN1      | Pin 7       |
+
+### Step 4: 12V Solenoid lock  + Power Supply
+Locate the 3 screw terminals on your relay (usually labeled):
+         - COM (Common)
+         - NC (Normally Closed)  
+         - NO (Normally Open)
+         
+         -Take a wire from 12V adapter's POSITIVE (+) wire connect it to relay "COM" terminal
+         
+         -Take another wire. Connect relay "NO" terminal to Door lock's POSITIVE (+) wire.
+         
+         -Take 's NEGATIVE (-) wire. Connect it DIRECTLY to 12V adapter's NEGATIVE (-) wire.
+         
+         -DO NOT PLUG IN 12V ADAPTER YET
+
+### Step 5: IR Sensor connection
+
+-connect wire from IR "VCC" to Arduino "5V"
+
+-connect wire from IR "GND" to Arduino "GND
+
+-connect  wire from IR "OUT" to Arduino "Pin 3"
+
+-Position IR sensor so it will detect someone walking through a doorway
+
+### Step 6: Upload Code
+
+ -Connect Arduino to computer via USB cable
+ 
+ -Open Arduino IDE on your computer
+ 
+ -upload the code
+
+ ### Step 7: Test RFID
+
+ Open Serial Monitor
+ 
+-Set baud rate to 9600
+
+-Tap your student card on the RFID reader
+
+-You should see "Card UID: XX XX XX XX" in Serial Monitor
+
+-Buzzer should beep
+
+-should CLICK (you'll hear it)
 
 ---
 
@@ -122,13 +197,156 @@ To solve these challenges, this project proposes upgrading the existing RFID sys
 ### Main Firmware (e.g., `main.ino`)
 
 ```cpp
+
 void setup() {
-  Serial.begin(9600);
-  // Initialize sensors and pins here
+    
+    Serial.begin(9600);
+    
+    
+    pinMode(RELAY_PIN, OUTPUT);
+    pinMode(IR_SENSOR_PIN, INPUT_PULLUP);
+    
+   
+    digitalWrite(RELAY_PIN, HIGH);
+    
+    // Initialize the RFID reader
+    SPI.begin();
+    delay(200);
+    mfrc522.PCD_Init();
+    delay(200);
+    
+    // Show a welcome message on the serial monitor
+    Serial.println("=================================");
+    Serial.println("RFID ACCESS CONTROL SYSTEM");
+    Serial.println("=================================");
+    Serial.println("System ready. Tap your card to begin.");
+    Serial.println("=================================");
+    Serial.println();
+}
+
+/*
+ * This function checks whether the scanned card matches the authorized one.
+ * It compares each byte of the card UID.
+ * Returns true if the card is allowed, false otherwise.
+ */
+bool isAuthorized(byte *cardUID) {
+    for (int i = 0; i < 4; i++) {
+        if (cardUID[i] != authorizedCard[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/*
+ * If the RFID reader stops responding, this function resets it.
+ */
+void resetRFIDReader() {
+    Serial.println("Resetting RFID reader...");
+    digitalWrite(RST_PIN, LOW);
+    delay(100);
+    digitalWrite(RST_PIN, HIGH);
+    delay(100);
+    mfrc522.PCD_Init();
+    delay(100);
 }
 
 void loop() {
-  // Main logic here
+    
+    //  Part One: Check for an RFID card
+    
+    if (mfrc522.PICC_IsNewCardPresent()) {
+        if (mfrc522.PICC_ReadCardSerial()) {
+            // The card was read successfully
+            readFailCount = 0;
+            lastCardRead = millis();
+            
+            // Show the card's unique ID on the serial monitor
+            Serial.print("Card UID: ");
+            for (byte i = 0; i < mfrc522.uid.size; i++) {
+                Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? "0" : "");
+                Serial.print(mfrc522.uid.uidByte[i], HEX);
+                if (i < mfrc522.uid.size - 1) Serial.print(" ");
+            }
+            Serial.println();
+            
+            // Decide if the card is allowed
+            if (isAuthorized(mfrc522.uid.uidByte)) {
+                Serial.println("Access granted. Walk past the sensor to unlock the door.");
+                accessGranted = true;
+            } else {
+                Serial.println("Access denied. The door stays locked.");
+                Serial.println("Please tap your registered card.");
+                accessGranted = false;
+            }
+            
+            // Stop reading this card so we can read the next one
+            mfrc522.PICC_HaltA();
+            mfrc522.PCD_StopCrypto1();
+            delay(500);
+            
+        } else {
+            // Something went wrong while reading the card
+            readFailCount++;
+            if (readFailCount >= 5) {
+                resetRFIDReader();
+                readFailCount = 0;
+                lastResetTime = millis();
+            }
+        }
+    }
+    
+    //  Part Two: Check the IR motion sensor
+    
+    int sensorState = digitalRead(IR_SENSOR_PIN);
+    
+    // We are looking for the moment the sensor changes from no motion to motion
+    if (lastSensorState == HIGH && sensorState == LOW) {
+        Serial.println("Motion detected.");
+        delay(50);  // This small delay helps ignore false readings
+        sensorState = digitalRead(IR_SENSOR_PIN);
+        
+        if (sensorState == LOW) {  // Confirm that motion really happened
+            if (accessGranted && !doorUnlocked) {
+                Serial.println("Unlocking the door now.");
+                digitalWrite(RELAY_PIN, LOW);  // Turn relay on to unlock
+                doorUnlocked = true;
+                lockTimer = millis();
+                Serial.println("The door will lock again in 5 seconds.");
+                Serial.println();
+            } 
+            else if (!accessGranted) {
+                Serial.println("No authorization. Please tap your card first.");
+                Serial.println();
+            }
+            else if (doorUnlocked) {
+                Serial.println("The door is already unlocked.");
+                Serial.println();
+            }
+        }
+    }
+    lastSensorState = sensorState;
+    
+    //  Part Three: Lock the door automatically after a delay
+    
+    if (doorUnlocked && (millis() - lockTimer >= DOOR_UNLOCK_DURATION)) {
+        Serial.println("Locking the door now.");
+        digitalWrite(RELAY_PIN, HIGH);  // Turn relay off to lock
+        doorUnlocked = false;
+        accessGranted = false;
+        
+        Serial.println();
+        Serial.println("=================================");
+        Serial.println("Person entered. Door is now locked.");
+        Serial.println("=================================");
+        Serial.println("Ready for the next person.");
+        Serial.println("Please tap your card to begin.");
+        Serial.println("=================================");
+        Serial.println();
+    }
+    
+    delay(50);  // A short pause to keep the system stable
+}
 }
 ```
 
@@ -136,18 +354,32 @@ void loop() {
 
 | Function Name | Description |
 |---|---|
-| `setup()` | Initializes hardware peripherals and serial communication |
-| `loop()` | Main execution loop |
-| `[yourFunction()]` | [Describe it] |
-
+|  setup() | Initializes serial communication, relay pin, IR sensor pin, RFID reader, and displays the welcome message |
+|  loop() | Main program loop that checks RFID cards, monitors the IR sensor, and controls the door lock system |
+|  isAuthorized()  | Compares the scanned RFID card UID with the authorized card UID to check access permission |
+|  resetRFIDReader()  | Resets and reinitializes the RFID reader when reading errors occur |
+|  PICC_IsNewCardPresent() | Detects whether a new RFID card is placed near the reader |
+|  PICC_ReadCardSerial() | Reads the UID (unique ID) of the RFID card |
+|  PICC_HaltA()  | Stops communication with the current RFID card |
+|  PCD_StopCrypto1()  | Stops encrypted communication between the RFID reader and card |
+|  PCD_Init()  | Initializes the MFRC522 RFID reader module |
+|  SPI.begin()  | Starts SPI communication between the Arduino and RFID module |
+|  Serial.begin()  | Starts serial communication with the computer |
+|  pinMode()  | Configures pins as input or output |
+|  digitalWrite()  | Sends HIGH or LOW signals to control components like the relay |
+|  digitalRead()  | Reads the current state of the IR sensor |
+|  millis()  | Returns the time in milliseconds since the Arduino started running |
+|  delay()  | Pauses the program for a short amount of time |
 ---
 
 ## 🧪 Testing & Results
 
 | Test # | Description | Expected Result | Actual Result | Pass/Fail |
 |---|---|---|---|---|
-| 1 | [e.g. Sensor reads temperature] | [e.g. ±2°C accuracy] | [e.g. ±1.5°C] | ✅ Pass |
-| 2 | [e.g. Wi-Fi transmission] | [e.g. Every 10s] | | |
+| 1 | RFID reader | reads card | reads | ✅ Pass |
+| 2 | lock gate | 5 sec after unlocking | locks after 5 seconds |  ✅ Pass |
+| 3 | LED flickers when there is movement | LED Flickers| ✅ Pass |
+| 4 | Relay Module to click after unlocking| Does not click | ❎ fail | 
 
 ---
 
@@ -170,7 +402,7 @@ void loop() {
 
 ## 📚 References
 
-1. [Reference Title](https://link-to-reference.com) — _Brief description_
+1. [Ardiuno RFID|how to use RFID RC522 with Ardiuno](https://youtu.be/pdBrvLGH0PE?si=7686agDW0Khmpqe8) — _Brief description_
 2. [Reference Title](https://link-to-reference.com) — _Brief description_
 
 ---
