@@ -147,7 +147,7 @@ Place breadboard next to Arduino
 Keep laptop/USB power within reach
 
 ### Step 1:  
-<img width="1200" height="300" alt="board" src="https://github.com/user-attachments/assets/b06d9346-ea9d-4d5b-8620-6224b2303747" />
+<img width="600" height="600" alt="board" src="https://github.com/user-attachments/assets/b06d9346-ea9d-4d5b-8620-6224b2303747" />
 
 
 ### Step 2:  RFID Module Connections
