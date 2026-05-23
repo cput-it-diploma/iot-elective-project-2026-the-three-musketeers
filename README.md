@@ -229,9 +229,7 @@ Locate the 3 screw terminals on your relay (usually labeled):
 
 -You should see "Card UID: XX XX XX XX" in Serial Monitor
 
--Buzzer should beep
-
--should CLICK (you'll hear it)
+[![Watch the video](https://img.youtube.com/vi/WzNO14hMa0A/maxresdefault.jpg)](https://youtube.com/shorts/WzNO14hMa0A)
 
 ---
 
