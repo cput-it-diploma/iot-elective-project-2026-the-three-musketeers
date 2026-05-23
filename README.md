@@ -208,6 +208,9 @@ Locate the 3 screw terminals on your relay (usually labeled):
 
 -Position IR sensor so it will detect someone walking through a doorway
 
+<img width="400" height="400" alt="sensor" src="https://github.com/user-attachments/assets/8cde9d69-771b-4cad-9dab-7b2e7ad8a597" />
+
+
 ### Step 6: Upload Code
 
  -Connect Arduino to computer via USB cable
