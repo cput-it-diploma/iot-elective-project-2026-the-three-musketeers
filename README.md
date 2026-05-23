@@ -147,11 +147,6 @@ Place breadboard next to Arduino
 Keep laptop/USB power within reach
 
 ### Step 1:  
-<img width="600" height="600" alt="board" src="https://github.com/user-attachments/assets/b06d9346-ea9d-4d5b-8620-6224b2303747" />
-
-
-### Step 2:  RFID Module Connections
-
 Locate the RFID pins and connect them to their corresponding Arduino Uno pins. as follows,
 ## RFID connection table
 
@@ -165,10 +160,20 @@ Locate the RFID pins and connect them to their corresponding Arduino Uno pins. a
 | 3.3V         | 3.3V (NOT 5V)  | 
 | GND          | GND            | 
 
+<img width="600" height="600" alt="board" src="https://github.com/user-attachments/assets/b06d9346-ea9d-4d5b-8620-6224b2303747" />
 
-![Step 2 Photo](images/build_step2.jpg)
+
+
+
+### Step 2: Relay Module 
+Go Ahead and grab your relay module
+<img width="500" height="500" alt="relay module" src="https://github.com/user-attachments/assets/ce830ef5-3cf4-4d94-9dd5-f1455058bcb3" />
+
 
 ### Step 3: Relay Module Connection
+
+<img width="500" height="500" alt="layout" src="https://github.com/user-attachments/assets/d8d6aa83-02d4-4cf0-9d9f-a4fe2833af31" />
+
 
 Locate the Relay Module pins and connect them to their corresponding Arduino Uno pins. as follows,
 ## Relay Module Connection Table
